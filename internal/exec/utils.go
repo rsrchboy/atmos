@@ -392,6 +392,22 @@ func ProcessStacks(configAndStacksInfo c.ConfigAndStacksInfo, checkStack bool) (
 	configAndStacksInfo.TerraformWorkspace = workspace
 	configAndStacksInfo.ComponentSection["workspace"] = workspace
 
+	// This is a bit of a hack to support "workspaces" in a remote that
+	// doesn't support it (http) with systems that allow it to be
+	// configured-in as part of the address (e.g. GitLab, see
+	// https://docs.gitlab.com/ee/user/infrastructure/iac/terraform_state.html
+	// for additional details).
+	if configAndStacksInfo.ComponentBackendType == "http" {
+		// ...loop over each bit, and do the replace context thing
+		for k := range configAndStacksInfo.ComponentBackendSection {
+			// if we're a string entry, do the replace!
+			if v, ok := configAndStacksInfo.ComponentBackendSection[k].(string); ok {
+				s := strings.ReplaceAll(v, "{workspace}", workspace+"-"+configAndStacksInfo.FinalComponent)
+				configAndStacksInfo.ComponentBackendSection[k] = s
+			}
+		}
+	}
+
 	return configAndStacksInfo, nil
 }
 
