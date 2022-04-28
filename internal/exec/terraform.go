@@ -257,7 +257,7 @@ func ExecuteTerraform(cmd *cobra.Command, args []string) error {
 	allArgsAndFlags = append(allArgsAndFlags, info.AdditionalArgsAndFlags...)
 
 	// Run `terraform workspace`
-	if info.SubCommand != "init" {
+	if info.SubCommand != "init" && info.ComponentBackendType != "http" {
 		err = ExecuteShellCommand(info.Command, []string{"workspace", "select", info.TerraformWorkspace}, componentPath, info.ComponentEnvList, info.DryRun)
 		if err != nil {
 			err = ExecuteShellCommand(info.Command, []string{"workspace", "new", info.TerraformWorkspace}, componentPath, info.ComponentEnvList, info.DryRun)
