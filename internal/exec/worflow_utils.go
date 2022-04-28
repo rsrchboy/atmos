@@ -3,13 +3,21 @@ package exec
 import (
 	"errors"
 	"fmt"
+	"os"
+	"strings"
+
 	c "github.com/cloudposse/atmos/pkg/config"
 	"github.com/fatih/color"
-	"strings"
 )
 
 func executeWorkflowSteps(workflowDefinition c.WorkflowDefinition, dryRun bool) error {
 	var steps = workflowDefinition.Steps
+
+	atmosExe, err := os.Executable()
+	if err != nil {
+		// this... shouldn't happen
+		return err
+	}
 
 	for _, step := range steps {
 		var command = strings.TrimSpace(step.Command)
@@ -47,7 +55,7 @@ func executeWorkflowSteps(workflowDefinition c.WorkflowDefinition, dryRun bool) 
 				color.HiCyan(fmt.Sprintf("Stack: %s", finalStack))
 			}
 
-			if err := ExecuteShellCommand("atmos", args, ".", []string{}, dryRun); err != nil {
+			if err := ExecuteShellCommand(atmosExe, args, ".", []string{}, dryRun); err != nil {
 				return err
 			}
 		} else {
