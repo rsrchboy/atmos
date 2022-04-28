@@ -7,6 +7,7 @@ require (
 	github.com/fatih/color v1.13.0
 	github.com/hashicorp/go-getter v1.5.11
 	github.com/imdario/mergo v0.3.12
+	github.com/joho/godotenv v1.4.0
 	github.com/json-iterator/go v1.1.12
 	github.com/mitchellh/go-homedir v1.1.0
 	github.com/pkg/errors v0.9.1
