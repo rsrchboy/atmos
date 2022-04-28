@@ -6,6 +6,7 @@ type Terraform struct {
 	DeployRunInit           bool   `yaml:"deploy_run_init" json:"deploy_run_init" mapstructure:"deploy_run_init"`
 	InitRunReconfigure      bool   `yaml:"init_run_reconfigure" json:"init_run_reconfigure" mapstructure:"init_run_reconfigure"`
 	AutoGenerateBackendFile bool   `yaml:"auto_generate_backend_file" json:"auto_generate_backend_file" mapstructure:"auto_generate_backend_file"`
+	WorkspacePattern        string `yaml:"workspace_pattern" json:"workspace_pattern" mapstructure:"workspace_pattern"`
 }
 
 type Helmfile struct {

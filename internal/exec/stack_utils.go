@@ -27,6 +27,8 @@ func BuildTerraformWorkspace(
 	} else if terraformWorkspace, terraformWorkspaceExist := componentMetadata["terraform_workspace"].(string); terraformWorkspaceExist {
 		// Terraform workspace can be overridden per component in YAML config `metadata.terraform_workspace`
 		workspace = terraformWorkspace
+	} else if p := c.Config.Components.Terraform.WorkspacePattern; p != "" {
+		workspace = c.ReplaceContextTokens(context, p)
 	} else if context.BaseComponent == "" {
 		workspace = contextPrefix
 	} else {
